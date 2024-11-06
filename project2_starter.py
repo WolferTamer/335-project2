@@ -63,6 +63,9 @@ def scheduler(schedules,start_hours,duration):
           # Current event is 8:00-9:30
           # New timeslot is 9:30-18:00
           timeslots[n][0] = event[1]  
+          if timeslots[n][0] >= bestEnd:
+             timeslots.pop()
+             break
     formatted = list()
     for slot in timeslots:
         newslot = list()
