@@ -42,7 +42,7 @@ def scheduler(schedules,start_hours,duration):
     timeslots.append([bestStart,bestEnd])
     for event in master_list:
         n = len(timeslots)-1
-        if event[0] > timeslots[n][0]:
+        if event[0] >= timeslots[n][0]+duration:
             # Current Timeslot is 9:00 - 18:00
             # Current event is 10:00 - 11:30
             # New timeslots are 9:00-10:00, 11:30 - 18:00
@@ -62,7 +62,7 @@ def scheduler(schedules,start_hours,duration):
           # Current Timeslot is 9:00-18:00
           # Current event is 8:00-9:30
           # New timeslot is 9:30-18:00
-          timeslots[n][0] = event[1]  
+          timeslots[n][0] = event[1] 
     formatted = list()
     for slot in timeslots:
         newslot = list()
