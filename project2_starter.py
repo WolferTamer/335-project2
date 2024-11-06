@@ -1,5 +1,5 @@
 # Schedules is a 2D array, with the value of a 2 string array.
-def schedule(schedules,start_hours,duration):
+def scheduler(schedules,start_hours,duration):
     
     #Merging every schedule into one list
     string_list = list()
@@ -72,11 +72,62 @@ def schedule(schedules,start_hours,duration):
     return formatted    
 def sort_by_start(x):
     return x[0]
-schedule1 = [ ['7:00', '8:30'], ['12:00', '13:00'], ['16:00', '18:00']]
+  
+  
+  
+### pre-file testing
+'''schedule1 = [ ['7:00', '8:30'], ['12:00', '13:00'], ['16:00', '18:00']]
 schedule2 = [ ['9:00', '10:30'], ['12:20', '13:30'], ['14:00', '15:00'], ['16:00', '17:00' ]]
 compschedule = [schedule1,schedule2]
 hours1 = ['9:00','18:30']
 hours2 = ['9:00','19:00']
 comphours = [hours1,hours2]
 duration = 30
-print(schedule(schedules=compschedule,start_hours=comphours,duration=duration))
+print(schedule(schedules=compschedule,start_hours=comphours,duration=duration))'''
+
+
+### import from Input.txt
+file = open('Input.txt', 'r', encoding="utf-8")
+file.readline()
+
+done = False
+while not done:
+  schedules = list()
+  working_hours = list()
+  while True:
+    # parse out schedule
+    schedule : str = file.readline()
+    person_schedule = list()
+    schedule_times = schedule.split(' = ')[1].strip('\n')
+    events = schedule_times.split(',')
+    for event in events:
+      split = event.split('-')
+      person_schedule.append([split[0], split[1]])
+    schedules.append(person_schedule)
+    
+    # parse working hours
+    hours : str = file.readline()
+    hours = hours.split(' = ')[1].strip('\n')
+    hours = hours.split(',')
+    for time in hours:
+      split = time.split('-')
+      working_hours.append([split[0], split[1]])
+    next_line : str = file.readline()
+    if next_line == '\n':
+      # we are still looking at the same day
+      continue
+    elif 'duration_of_meeting' in next_line:
+      meeting_duration = int(next_line.split(' = ')[1])
+      print(scheduler(schedules=schedules, start_hours=working_hours, duration=meeting_duration))
+      if not file.readline():
+        done = True
+        break
+      else:
+        schedules.clear()
+        working_hours.clear()
+    else:
+      break
+    
+    
+
+file.close()
