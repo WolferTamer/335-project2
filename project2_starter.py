@@ -56,16 +56,18 @@ def scheduler(schedules,start_hours,duration):
             timeslots.append([event[1],bestEnd])
         elif event[1] > timeslots[n][0]:
           # Current Timeslot is 9:00-18:00
-          # Current event is 8:00-8:30
-          # No changes made
-
-          # Current Timeslot is 9:00-18:00
           # Current event is 8:00-9:30
           # New timeslot is 9:30-18:00
           timeslots[n][0] = event[1]  
           if timeslots[n][0] >= bestEnd:
+             # Current Timeslot is 17:00-18:00
+             # Current event is 17:00-18:00
+             # Last timeslot is removed, loop ends
              timeslots.pop()
              break
+        # Current Timeslot is 9:00-18:00
+        # Current event is 8:00-8:30
+        # No changes made
     formatted = list()
     for slot in timeslots:
         newslot = list()
@@ -92,6 +94,7 @@ print(schedule(schedules=compschedule,start_hours=comphours,duration=duration))'
 ### import from Input.txt
 file = open('Input.txt', 'r', encoding="utf-8")
 file.readline()
+out = open("Output.txt", "w")
 
 done = False
 while not done:
@@ -121,7 +124,9 @@ while not done:
       continue
     elif 'duration_of_meeting' in next_line:
       meeting_duration = int(next_line.split(' = ')[1])
-      print(scheduler(schedules=schedules, start_hours=working_hours, duration=meeting_duration))
+      # Write to the file
+      out.write(str(scheduler(schedules=schedules, start_hours=working_hours, duration=meeting_duration)))
+      out.write("\n")
       if not file.readline():
         done = True
         break
@@ -134,3 +139,4 @@ while not done:
     
 
 file.close()
+out.close()
